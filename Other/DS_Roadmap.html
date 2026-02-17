@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Innovation Timeline</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+        }
+        
+        .tooltip {
+            position: absolute;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 14px;
+            max-width: 250px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .axis-label {
+            font-size: 14px;
+            font-weight: 600;
+            fill: #2c3e50;
+        }
+        
+        .grid line {
+            stroke: #e0e0e0;
+            stroke-width: 1;
+        }
+        
+        .axis {
+            font-size: 12px;
+            fill: #555;
+        }
+        
+        circle {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        circle:hover {
+            stroke-width: 3;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+        }
+        
+        .legend {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .legend-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+            padding: 5px;
+        }
+        
+        .legend-circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        
+        .legend-description {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Evolution of Data Science Technologies</div>
+        <div class="subtitle">Innovation Timeline: From Statistical Methods to AI (Complexity Scale: 1-100)</div>
+        
+        <div class="chart-container" id="chart"></div>
+        
+        <div class="legend" id="legend"></div>
+    </div>
+
+    <script>
+        // Data for data science innovations
+        const data = [
+            // Early Statistical Methods
+            {name: "Basic Statistics", year: 1950, complexity: 5, category: "Statistics", description: "Mean, median, standard deviation"},
+            {name: "Hypothesis Testing", year: 1952, complexity: 8, category: "Statistics", description: "T-tests, chi-square tests"},
+            {name: "ANOVA", year: 1955, complexity: 12, category: "Statistics", description: "Analysis of variance"},
+            
+            // Regression Era
+            {name: "Linear Regression", year: 1958, complexity: 15, category: "Regression", description: "Simple and multiple linear regression"},
+            {name: "Logistic Regression", year: 1965, complexity: 20, category: "Regression", description: "Binary classification regression"},
+            {name: "Polynomial Regression", year: 1970, complexity: 22, category: "Regression", description: "Non-linear relationships"},
+            
+            // Data Mining
+            {name: "Decision Trees", year: 1975, complexity: 25, category: "Data Mining", description: "Rule-based classification"},
+            {name: "K-Means Clustering", year: 1978, complexity: 18, category: "Data Mining", description: "Unsupervised clustering"},
+            {name: "Association Rules", year: 1985, complexity: 28, category: "Data Mining", description: "Market basket analysis"},
+            {name: "Naive Bayes", year: 1988, complexity: 24, category: "Data Mining", description: "Probabilistic classifier"},
+            
+            // Machine Learning
+            {name: "Support Vector Machines", year: 1992, complexity: 45, category: "Machine Learning", description: "Kernel-based classification"},
+            {name: "Random Forest", year: 1995, complexity: 38, category: "Machine Learning", description: "Ensemble of decision trees"},
+            {name: "K-Nearest Neighbors", year: 1990, complexity: 20, category: "Machine Learning", description: "Instance-based learning"},
+            
+            // Advanced ML & Monte Carlo
+            {name: "Monte Carlo Simulation", year: 1998, complexity: 35, category: "Simulation", description: "Statistical sampling methods"},
+            {name: "Principal Component Analysis", year: 1999, complexity: 32, category: "Machine Learning", description: "Dimensionality reduction"},
+            {name: "Ensemble Methods", year: 2002, complexity: 42, category: "Machine Learning", description: "Bagging and boosting"},
+            
+            // Gradient Boosting Era
+            {name: "AdaBoost", year: 2003, complexity: 48, category: "Boosting", description: "Adaptive boosting algorithm"},
+            {name: "Gradient Boosting", year: 2005, complexity: 52, category: "Boosting", description: "Sequential weak learner improvement"},
+            {name: "XGBoost", year: 2014, complexity: 58, category: "Boosting", description: "Extreme gradient boosting"},
+            {name: "LightGBM", year: 2017, complexity: 60, category: "Boosting", description: "Light gradient boosting machine"},
+            {name: "CatBoost", year: 2018, complexity: 62, category: "Boosting", description: "Categorical boosting"},
+            
+            // Deep Learning & Neural Networks
+            {name: "Artificial Neural Networks", year: 2000, complexity: 40, category: "Neural Networks", description: "Multi-layer perceptrons"},
+            {name: "Deep Learning", year: 2006, complexity: 65, category: "Neural Networks", description: "Deep neural networks"},
+            {name: "Convolutional Neural Networks", year: 2008, complexity: 68, category: "Neural Networks", description: "Image recognition networks"},
+            {name: "Recurrent Neural Networks", year: 2010, complexity: 70, category: "Neural Networks", description: "Sequential data processing"},
+            {name: "LSTM", year: 2012, complexity: 72, category: "Neural Networks", description: "Long short-term memory networks"},
+            {name: "GAN", year: 2014, complexity: 75, category: "Neural Networks", description: "Generative adversarial networks"},
+            
+            // NLP & Transformers
+            {name: "Word2Vec", year: 2013, complexity: 55, category: "NLP", description: "Word embedding technique"},
+            {name: "Transformer Architecture", year: 2017, complexity: 80, category: "NLP", description: "Attention-based neural networks"},
+            {name: "BERT", year: 2018, complexity: 85, category: "NLP", description: "Bidirectional encoder representations"},
+            {name: "GPT", year: 2018, complexity: 82, category: "NLP", description: "Generative pre-trained transformer"},
+            {name: "T5", year: 2019, complexity: 87, category: "NLP", description: "Text-to-text transfer transformer"},
+            
+            // Modern LLMs
+            {name: "GPT-3", year: 2020, complexity: 90, category: "LLM", description: "Large language model with 175B parameters"},
+            {name: "ChatGPT", year: 2022, complexity: 92, category: "LLM", description: "Conversational AI assistant"},
+            {name: "GPT-4", year: 2023, complexity: 95, category: "LLM", description: "Multimodal large language model"},
+            {name: "Claude", year: 2023, complexity: 94, category: "LLM", description: "Constitutional AI assistant"},
+            {name: "Gemini", year: 2023, complexity: 93, category: "LLM", description: "Google's multimodal AI"},
+            
+            // Emerging Technologies
+            {name: "Retrieval-Augmented Generation", year: 2024, complexity: 88, category: "Hybrid AI", description: "RAG systems combining retrieval and generation"},
+            {name: "Multimodal AI", year: 2024, complexity: 96, category: "Multimodal", description: "AI processing text, images, audio, video"}
+        ];
+
+        // Color scheme for categories
+        const colorScale = {
+            "Statistics": "#3498db",
+            "Regression": "#e74c3c",
+            "Data Mining": "#f39c12",
+            "Machine Learning": "#2ecc71",
+            "Simulation": "#9b59b6",
+            "Boosting": "#1abc9c",
+            "Neural Networks": "#e67e22",
+            "NLP": "#34495e",
+            "LLM": "#c0392b",
+            "Hybrid AI": "#8e44ad",
+            "Multimodal": "#d35400"
+        };
+
+        // Set up dimensions and margins
+        const margin = {top: 40, right: 60, bottom: 80, left: 80};
+        const width = 1140 - margin.left - margin.right;
+        const height = 560 - margin.top - margin.bottom;
+
+        // Create SVG
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create scales
+        const xScale = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.year))
+            .range([0, width]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 100])
+            .range([height, 0]);
+
+        // Create grid
+        const xGrid = d3.axisBottom(xScale)
+            .tickSize(-height)
+            .tickFormat("");
+
+        const yGrid = d3.axisLeft(yScale)
+            .tickSize(-width)
+            .tickFormat("");
+
+        g.append("g")
+            .attr("class", "grid")
+            .attr("transform", `translate(0,${height})`)
+            .call(xGrid);
+
+        g.append("g")
+            .attr("class", "grid")
+            .call(yGrid);
+
+        // Create axes
+        const xAxis = d3.axisBottom(xScale)
+            .tickFormat(d3.format("d"));
+
+        const yAxis = d3.axisLeft(yScale);
+
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", `translate(0,${height})`)
+            .call(xAxis);
+
+        g.append("g")
+            .attr("class", "axis")
+            .call(yAxis);
+
+        // Add axis labels
+        g.append("text")
+            .attr("class", "axis-label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height + 50)
+            .text("Year");
+
+        g.append("text")
+            .attr("class", "axis-label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -50)
+            .text("Complexity Scale (1-100)");
+
+        // Create tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        // Add circles
+        const circles = g.selectAll(".dot")
+            .data(data)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("cx", d => xScale(d.year))
+            .attr("cy", d => yScale(d.complexity))
+            .attr("r", 6)
+            .style("fill", d => colorScale[d.category])
+            .style("stroke", "#fff")
+            .style("stroke-width", 2)
+            .on("mouseover", function(event, d) {
+                d3.select(this).attr("r", 8);
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(`
+                    <strong>${d.name}</strong><br/>
+                    Year: ${d.year}<br/>
+                    Complexity: ${d.complexity}<br/>
+                    Category: ${d.category}<br/>
+                    <em>${d.description}</em>
+                `)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                d3.select(this).attr("r", 6);
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+
+        // Add labels to dots
+        const labels = g.selectAll(".label")
+            .data(data)
+            .enter().append("text")
+            .attr("class", "label")
+            .attr("x", d => xScale(d.year))
+            .attr("y", d => yScale(d.complexity) - 10)
+            .attr("text-anchor", "middle")
+            .style("font-size", "10px")
+            .style("font-weight", "500")
+            .style("fill", "#2c3e50")
+            .style("pointer-events", "none")
+            .style("text-shadow", "1px 1px 2px rgba(255,255,255,0.8)")
+            .text(d => d.name);
+
+        // Create legend
+        const legend = d3.select("#legend");
+        
+        // Add legend title
+        legend.append("div")
+            .attr("class", "legend-title")
+            .text("Technology Categories & Color Guide");
+        
+        // Create legend grid
+        const legendGrid = legend.append("div")
+            .attr("class", "legend-grid");
+        
+        const categories = Object.keys(colorScale);
+        
+        // Category descriptions
+        const categoryDescriptions = {
+            "Statistics": "Basic statistical methods and hypothesis testing",
+            "Regression": "Linear and logistic regression techniques", 
+            "Data Mining": "Pattern discovery and knowledge extraction",
+            "Machine Learning": "Supervised and unsupervised learning algorithms",
+            "Simulation": "Monte Carlo and statistical sampling methods",
+            "Boosting": "Gradient descent and ensemble boosting methods",
+            "Neural Networks": "Deep learning and artificial neural networks",
+            "NLP": "Natural language processing and text analysis",
+            "LLM": "Large language models and conversational AI",
+            "Hybrid AI": "Combined retrieval and generation systems",
+            "Multimodal": "AI processing multiple data types simultaneously"
+        };
+
+        categories.forEach(category => {
+            const legendItem = legendGrid.append("div")
+                .attr("class", "legend-item");
+
+            legendItem.append("div")
+                .attr("class", "legend-circle")
+                .style("background-color", colorScale[category]);
+
+            const textContainer = legendItem.append("div");
+            
+            textContainer.append("div")
+                .style("font-weight", "600")
+                .text(category);
+                
+            textContainer.append("div")
+                .attr("class", "legend-description")
+                .text(categoryDescriptions[category]);
+        });
+
+        // Add animation
+        circles
+            .style("opacity", 0)
+            .transition()
+            .duration(1000)
+            .delay((d, i) => i * 50)
+            .style("opacity", 1);
+            
+        // Add animation to labels
+        labels
+            .style("opacity", 0)
+            .transition()
+            .duration(1000)
+            .delay((d, i) => i * 50 + 200)
+            .style("opacity", 1);
+    </script>
+</body>
+</html>
