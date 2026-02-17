@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MSc Applied Data Science Workshop</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #2c3e50;
+      display: flex;
+    }
+
+    /* ========================================================= */
+    /* =============== SIDEBAR NAVIGATION STYLES ================ */
+    /* ========================================================= */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 300px;
+      background-color: #3f525a;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #455a64;
+    }
+
+    /* ========================================================= */
+    /* ==================== MAIN CONTENT AREA ================== */
+    /* ========================================================= */
+    .content {
+      margin-left: 300px;
+      padding: 40px;
+      flex-grow: 1;
+      background-color: white;
+    }
+
+    section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1, h2, h3, h4 {
+      color: #2c3e50;
+    }
+
+    hr {
+      border: 0;
+      height: 3px;
+      background: red;
+      margin: 20px 0;
+    }
+
+
+/* 
+code, pre {
+  background: #f4f4f4;
+  border-radius: 5px;
+  padding: 5px;
+}
+*/
+
+    .back-to-top {
+      display: block;
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .back-to-top a {
+      color: #546e7a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    details > summary {
+      cursor: pointer;
+      color: #1565c0;
+      font-weight: 600;
+    }
+
+    details > summary:hover {
+      color: #c62828;   /* strong contrast */
+      text-decoration: underline;
+    }
+
+    ul.red_bullets > li::marker { color: red; }
+
+ 
+
+    details.code-block pre {
+      background-color: #f8fafc;   /* light canvas */
+      border: 1px solid #e2e8f0;
+      padding: 1em;
+      border-radius: 6px;
+    }
+
+    details.code-block pre code {
+      font-size: 0.85em;           /* slightly smaller */
+    }
+
+  details.pdf-block {
+    margin: 1em 0;
+  }
+
+  details.pdf-block summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #1565c0;
+  }
+
+  details.pdf-block summary:hover {
+    color: #c62828;
+    text-decoration: underline;
+  }   
+
+  details.notebook-block {
+    margin: 1em 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+  }
+
+  details.notebook-block summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #1565c0;
+    padding: 0.5em 0.8em;
+  }
+
+  details.notebook-block summary:hover {
+    color: #c62828;
+    text-decoration: underline;
+  }
+
+  .notebook-frame {
+    width: 100%;
+    height: 800px;        /* adjust as needed */
+    border: none;
+    border-top: 1px solid #ddd;
+    background: white;
+  }
+
+  .notebook-frame {
+  overflow: auto;
+  }
+
+  .hr-red {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 0, 0, 0.20);
+  }
+
+  </style>
+</head>
+  <!-- Prism syntax highlighting theme -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<body>
+
+  <!-- ========================================================= -->
+  <!-- =============== SIDEBAR NAVIGATION SECTION =============== -->
+  <!-- ========================================================= -->
+  <div class="sidebar">
+    <h2>Content</h2>
+    <a href="#overview" onclick="showSection('overview')">Overview & Learning Outcomes</a>
+    <a href="#section1" onclick="showSection('section1')">Sect 1 — Environment</a>
+    <a href="#section2" onclick="showSection('section2')">Sect 2 — Data Engineering</a>
+    <a href="#section3" onclick="showSection('section3')">Sect 3 — Predictive Analytics I</a>
+    <a href="#section4" onclick="showSection('section4')">Sect 4 — Predictive Analytics II</a>
+    <a href="#section5" onclick="showSection('section5')">Sect 5 — Model Stacking</a>
+    <a href="#section6" onclick="showSection('section6')">Sect 6 — Networks, Visualization</a>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- ==================== MAIN CONTENT AREA ================== -->
+  <!-- ========================================================= -->
+  <div class="content">
+    <h1>Data Science Workshops</h1>
+
+    <!-- ========================================================= -->
+    <!-- ============ OVERVIEW & LEARNING OUTCOMES =============== -->
+    <!-- ========================================================= -->
+<section id="overview" class="active">
+
+  <style>
+    #overview li {
+      margin-bottom: 14px;
+      font-size: 1.15rem;
+      line-height: 1.4;
+    }
+  </style>
+
+  <h2>Overview & Learning Outcomes</h2>
+
+  <h3>Historical Lens</h3>
+
+  <ul style="margin-bottom: 25px;">
+    <li>
+      📘 <a href="Other/DS_Roadmap.html"
+             target="_blank"
+             title="Open slides as PDF">
+          <code>Data Science Roadmap</code>
+      </a>
+    </li>
+
+    <li>
+      📘 <a href="Other/nlp_adoption_curve.html"
+             target="_blank"
+             title="Open slides as PDF">
+          <code>NLP Evolution</code>
+      </a>
+    </li>
+  </ul>
+
+  <p>The lectures will include hands-on work. There will be a teams project which will be marked.</p>
+
+  <p style="margin-bottom: 25px;">
+    <b>Outputs:</b> Notebooks + figures/charts + key insights
+  </p>
+
+  <!-- Clean H2 with proper spacing -->
+  <h2 style="margin-top: 45px; margin-bottom: 10px;">
+    High Level Agenda:
+  </h2>
+
+  <ol>
+    <li>Set up Python Environment.</li>
+    <li>Data Engineering.</li>
+    <li>Predictive Analytics 1.</li>
+    <li>Predictive Analytics 2.</li>
+    <li>Model Stacking.</li>
+    <li>Networks.</li>
+  </ol>
+
+  <div class="back-to-top">
+    <a href="#top" onclick="scrollToTop()">Back to Top ↑</a>
+  </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- ======== SECTION 1 — ENVIRONMENT & FOUNDATIONS =========== -->
+<!-- ========================================================= -->
+    <section id="section1">
+      <h2>Section 1 — Environment & Foundations</h2>
+      <p><strong>Goals:</strong> reproducible local/Colab setup; environment management; core stack</p>
+
+      <ul>
+        <li>
+          📘 <a href="Section1/01_Environment.pdf"
+                target="_blank"
+                title="Open slides as PDF">
+                <code>Environment</code>
+              </a>
+        </li>
+
+        <li>
+          📗 <a href="Section1/02_CS_basicS.pdf"
+                target="_blank"
+                title="Open setup notes as html">
+                <code>CS Notes(PDF)</code>
+              </a>
+        </li>
+        <li>
+          📗 <a href="Section1/03_Colab_Notes.pdf"
+                target="_blank"
+                title="Open setup notes as html">
+                <code>Colab notes</code>
+              </a>
+        </li>
+        <li>
+          📗 <a href="Section1/04_Core_Stack.pdf"
+                target="_blank"
+                title="Open setup notes as html">
+                <code>Core DS Stack</code>
+              </a>
+        </li>
+      </ul>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- =============== SECTION 2: DATA ENGINEERING ============= -->
+    <!-- ========================================================= -->
+    <section id="section2">
+      <h2>Section 2 — Data Engineering</h2>
+      <p><strong>Goals:</strong> handle multi-source, multi-frequency macro/market data.</p>
+
+    <!-- ========================================================= -->
+    <!-- =============== SECTION 2: Time Series.     ============= -->
+    <!-- ========================================================= -->      
+      <h2>2.0 Time Series and Panel Data</h2>
+      <ul>
+          <li>
+            <strong>Univariate time series</strong> represent the evolution of a single variable over time and form the foundational data structure for
+            trend detection, volatility analysis, and regime identification
+            (e.g., daily S&amp;P 500 returns).
+          </li>
+          <p></p>
+          <li>
+            <strong>Multivariate time series</strong> extend this framework to multiple variables observed at the same frequency, enabling analysis of
+            co-movement, dependence, and dynamic interactions across markets or macro-financial drivers
+            (e.g., daily equities, bonds, and commodities).
+          </li>
+          <p></p>
+          <li>
+            <strong>Panel data</strong> combine cross-sectional and temporal dimensions, capturing repeated observations of multiple entities over time and
+            allowing separation of common dynamics from unit-specific effects
+            (e.g., quarterly GDP across multiple countries).
+          </li>
+          <p></p>
+          <li>
+            <strong>Mixed-frequency data</strong> arise when variables are observed at different temporal granularities, requiring explicit alignment,
+            aggregation, or state-space treatment to integrate high-frequency market data with lower-frequency macroeconomic indicators.
+          </li>
+          <p></p>
+          <p></p>
+          <li>
+          📗 <a href="Section2/0200_DataLake.pdf"
+                target="_blank"
+                title="DataLake overvie">
+                <code>Data Lake - Lakehouse Fundamentals</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0201_struct_Foundations.pdf"
+                target="_blank"
+                title="Time Series Structural Foundations">
+                <code>Time Series - Structural Foundations</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0202_TimeSeries_Challenges.pdf"
+                target="_blank"
+                title="Time Series Challenges">
+                <code>Time Series - Some Challenges</code>
+              </a>
+          </li>
+      </ul>
+    <!-- ========================================================= -->
+    <!-- =============== SECTION 2: DATA ENGINEERING  implications -->
+    <!-- ========================================================= -->
+  <hr class="hr-red">
+      <h2>2.0.2 Implications</h2>
+      <ul>
+        <h3>Ergodic Assumption (Univariate)</h3>
+          <p>
+          Many classical time series and econometric models implicitly assume ergodicity:
+          time averages converge to ensemble averages. In practice, this means that the
+          historical distribution of a series (mean, variance, correlations) is assumed
+          to be stable over time, so that patterns observed in the past are informative
+          about the future.
+          </p>
+              <details>
+              <summary>Rolling Mean</summary>
+              <img src="Images/0202_Rolling_mean_std.png" style="max-width:60%;">
+            </details>
+          <p>
+          Under ergodicity, longer historical samples improve estimation and reduce
+          uncertainty.
+          </p>
+            <li>The 6-month rolling mean (red) keeps drifting upward and changes slope across eras, does not converge to a stable value</li>
+            <li>The full-sample mean (grey dashed) is basically meaningless and is dominated by later, higher levels</li>
+            <li>The 6-month rolling std (green) is strongly time-varying (volatility clustering + regime shifts)</li>
+            <li>Variance is not constant, so different time windows behave like different distributions</li>
+        <h3>Non-Ergodic Reality</h3>
+          <p>
+          Financial and macroeconomic time series are typically non-ergodic.
+          Structural breaks, regime changes, policy shifts, crises, and technological
+          changes alter the underlying data-generating process over time.
+          </p>
+            <details>
+              <summary>Non-ergodic Reality</summary>
+              <img src="Images/0202_Rolling_Returns_mean_std.png" style="max-width:60%;">
+            </details>
+          <p>
+          <strong>As a result, historical averages may combine incompatible regimes and become
+          poor guides for future behavior.</strong>
+          </p>
+        <h3>Rolling vs Expanding Windows</h3>
+          <p>
+          Rolling windows emphasize recent data and adapt to regime changes but suffer
+          from higher estimation variance. Expanding windows use all available data,
+          reducing variance but implicitly assume long-term stability.
+
+          The choice reflects a trade-off between adaptability and statistical efficiency.
+          </p>
+             <details>
+              <summary>Rolling vs. Exanding Windows</summary>
+              <img src="Images/0202_Expanding_Windows.png" style="max-width:60%;">
+             </details><br>
+            <li>The expanding mean (blue) “ever-growing historical anchor” moving slowly since it include old low index levels</li>
+            <li>Old values keep pulling the mean down & therefore lags current regimes for a long time</li>
+            <li>The rolling 1y mean (red) is closer to a “current regime level” proxy, it forgets the distant past</li> <br>
+        <h3>The Shortest Series Problem (Multivariate)</h3>
+          <p>
+          Multivariate methods relying on covariance or correlation matrices require
+          aligned observations across all variables. When variables have different
+          start dates, the effective sample length collapses to the shortest series,
+          leading to information loss.
+          </p>
+        <h3>Curse of Dimensionality</h3>
+          <p>
+          An N-variable multivariate system requires N(N−1)/2 pairwise covariances.
+          The number of parameters grows quadratically with dimensionality, quickly
+          overwhelming available sample sizes. e.g. <strong>50 Factors := 1225 covariate pairs.</strong>
+          </p>
+        <h3>Spurious Correlations</h3>
+          <p>
+          In high-dimensional settings with limited data, random noise can generate
+          apparently significant correlations. As dimensionality increases, spurious
+          relationships can dominate true signal, obscuring meaningful structure.
+          </p>
+            <details>
+              <summary>Spurious Correlartions</summary>
+              <img src="Images/0202_Spurious_Correlations.png" style="max-width:60%;">
+            </details>
+            <p><strong>Summary:</strong></p>
+            <li>In high dimensions, pure random noise will still produce “convincing” correlations by chance, so correlation alone is not evidence</li>
+            <li>Extract only the upper-triangle off-diagonal correlations (50 * 49)/2 = 1225 correlations</li>
+            <li>The histogram is the sampling distribution of pairwise correlations under pure independent noise: it’s bell-shaped around 0 because finite samples make the estimated correlation fluctuate randomly</li>
+            <li>The red lines mark a per-pair 95% band, so about 5% of correlations fall outside; you expect about 0.05×1225 ≈ 61 “significant” tail correlations by chance, i.e., multiple testing creates false positives</li>
+      </ul>
+    <!-- ========================================================= -->
+    <!-- =============== SECTION 2.1: DATA Sources ============= -->
+    <!-- ========================================================= -->
+  <hr class="hr-red">
+    <h2>2.1 Data Sources</h2>
+      <ul>
+        <h3>Data Storage and Research-Layer Querying</h3>
+        <p>
+        <strong>Data Science research pipelines</strong> typically blend “quick-to-iterate” file-based workflows with database-grade queryability. 
+        <br><br><strong>Flat files (CSV/Parquet/JSON)</strong>and glob-based partition merges support fast experimentation and reproducible backtests.
+        <br><br><strong>Relational dtabases & SQL </strong>provides consistent joins, constraints, and auditable transformations. 
+        <br><br><strong>DuckDB </strong> is particularly effective as a research-layer engine: it queries directly over local/object-store files with vectorized performance, enabling analysts to scale from notebooks to repeatable batch jobs without committing early to heavyweight infrastructure.
+        </p>
+        <h3>API-Based Market, Macro, and Alternative Data Ingestion</h3>
+        <p>API ingestion is the buy-side bridge from raw vendor feeds to standardized research factors, e.g.</p>
+          <ul class="red_bullets" style="margin-top: 0.3em; margin-bottom: 0.8em;">
+            <li>Macro data (<strong>FRED</strong>, EIA, World Bank, Trading Economics)</li>
+            <li>Market data (<strong>Yahoo</strong>, <sytong>Alpha Vantage</sytong>)</li>
+            <li>Enterprise platforms (<strong>Refinitiv</strong>, Bloomberg)</li>
+            <li>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Other Source</th>
+                    <th>Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>ETF Database</td><td><a href="https://etfdb.com/">https://etfdb.com/</a></td></tr>
+                  <tr><td>FinViz</td><td><a href="https://finviz.com/">https://finviz.com/</a></td></tr>
+                  <tr><td>Google Finance</td><td><a href="https://lnkd.in/gWHw9Fhg">https://lnkd.in/gWHw9Fhg</a></td></tr>
+                  <tr><td>Investing</td><td><a href="https://www.investing.com/">https://www.investing.com/</a></td></tr>
+                  <tr><td>Macromicro</td><td><a href="https://en.macromicro.me/">https://en.macromicro.me/</a></td></tr>
+                  <tr><td>MarketWatch</td><td><a href="https://lnkd.in/gcWCY34e">https://lnkd.in/gcWCY34e</a></td></tr>
+                  <tr><td>Morningstar</td><td><a href="https://lnkd.in/giKy_WHw">https://lnkd.in/giKy_WHw</a></td></tr>
+                  <tr><td>Quandl / Nasdaq Data Link</td><td><a href="https://lnkd.in/gRCA676Q">https://lnkd.in/gRCA676Q</a></td></tr>
+                  <tr><td>Seeking Alpha</td><td><a href="https://seekingalpha.com/">https://seekingalpha.com/</a></td></tr>
+                  <tr><td>StockCharts</td><td><a href="https://lnkd.in/gQEjzWzW">https://lnkd.in/gQEjzWzW</a></td></tr>
+                  <tr><td>Tiingo</td><td><a href="https://www.tiingo.com/">https://www.tiingo.com/</a></td></tr>
+                  <tr><td>TradingView</td><td><a href="https://lnkd.in/gDcDb6dy">https://lnkd.in/gDcDb6dy</a></td></tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        <br><strong>Practical differences</strong> Revision policies, corporate action adjustments, symbol/mastering conventions, rate limits, and licensing changes must be made explicit in metadata and logging to ensure backtest integrity. 
+        </p>
+        <h3>Structured Data Normalization and Point-in-Time Integrity</h3>
+        <p>
+        Structured ingestion is about producing a clean, time-aligned “research-ready” panel: 
+          <ul class="red_bullets" style="margin-top: 0.3em; margin-bottom: 0.8em;">
+            <li>Prices and returns</li>
+            <li>Curves</li>
+            <li>Spreads</li>
+            <li>Fundamentals</li>
+            <li>MacroEconomic</li>
+            <li>etc.</li>        
+          </ul> 
+        <strong>A must</strong> - consistent identifiers, calendars, and frequencies. 
+        <p>
+         Most empirical risk is <strong>data <strong>risk: sample selection bias, look-ahead bias, data revisions, and structural breaks can overwhelm apparent signal strength</strong>
+        </p>
+         A disciplined schema—instrument mastering, PIT snapshots, and explicit calendars—turns ingestion into a controlled process, ensuring factor construction, regime labeling, and portfolio simulations remain comparable across assets and time.
+        </p>
+          <details class="notebook-block">
+          <summary>Yahoo Finance Ingestion</summary>
+          <iframe
+            src="Section2/0202_Yahoo.html"
+            class="notebook-frame"
+            loading="lazy">
+          </iframe>
+        </details>
+        <details class="notebook-block">
+          <summary>Yahoo Finance Ingestion</summary>
+          <iframe
+            src="Section2/0202_Fred.html"
+            class="notebook-frame"
+            loading="lazy">
+          </iframe>
+          </details>
+          <details class="notebook-block">
+            <summary>Alpha Vantage Finance Ingestion</summary>
+            <iframe
+              src="Section2/0202_AlphaVantage.html"
+              class="notebook-frame"
+              loading="lazy">
+            </iframe>
+          </details>
+          <details class="notebook-block">
+            <summary>DataReader Finance Ingestion</summary>
+            <iframe
+              src="Section2/0202_DataReader.html"
+              class="notebook-frame"
+              loading="lazy">
+            </iframe>
+          </details>
+          <details class="notebook-block">
+            <summary>Refinitive Finance Ingestion</summary>
+            <iframe
+              src="Section2/0202_Refinitive.html"
+              class="notebook-frame"
+              loading="lazy">
+            </iframe>
+          </details>
+  <hr class="hr-red">
+        <h3>Unstructured Data Comments</h3>
+        <p>
+        Unstructured data can be highly valuable, provided it produces interpretable and
+        investable signals. In practice, these signals typically take the form of:
+        </p>
+        <ul>
+          <li>Entities</li>
+          <li>Events</li>
+          <li>Sentiment</li>
+          <li>Other topics mapped onto a relevant universe with reliable timestamps</li>
+        </ul>
+        <p>
+        For quantitative research, the critical step is converting raw text streams into
+        robust, testable features. Common unstructured sources include:
+        </p>
+        <ul>
+          <li>News</li>
+          <li>Transcripts</li>
+          <li>Filings</li>
+          <li>Policy releases</li>
+          <li>Other text-based disclosures</li>
+        </ul>
+        <p>
+        The extracted features must remain stable under out-of-sample evaluation.
+        Examples include entity-linked event counts, novelty or burst metrics, and
+        embedding-based similarity measures. When engineered correctly, unstructured
+        data provides a contextual layer that supports regime interpretation, risk
+        monitoring, and early-warning signals rather than acting as a standalone
+        prediction engine.
+      </p>
+        <h3>Data Quality Controls and Failure Management</h3>
+        <p>
+        In production research and risk stacks, ingestion errors are inevitable; the objective is to make them observable, contained, and recoverable. Missing ticks, API gaps, schema drift, and vendor restatements should trigger validation checks, quarantine paths, and automated backfills—never silent imputation. For buy-side users, the operational payoff is significant: fewer false factor moves, fewer spurious regime shifts, and clearer attribution when model behavior changes because markets evolve, not because data pipelines failed.
+        </p>
+      </ul>
+  <hr class="hr-red">      
+      <h2>2.2 Handling Missingness, Frequencies & Quality</h2>
+          <h3>Missing Data</h3>
+          <p><strong>MCAR — Missing Completely At Random</strong>
+            <br> Values are missing for reasons unrelated to any observed or unobserved variables (pure “random” missingness).
+            <br> Missing values occure by chance, not because any systematic factor, there is no bias.
+            <br><b>Tech error / random outage:</b> A data vendor has intermittent server outages, causing random missing prices across dates and tickers.
+          </p>
+          <p><strong>MAR — Missing At Random</strong>
+            <br>Missingness depends only on variables you <i>do observe</i>, not on the missing value itself.
+            <br><strong>Imputation is possible</strong> but must be <b>conditioned on observable variables</b>, multiple imputation methods possible.
+          </p>
+          <p><strong>MNAR — Missing Not At Random</strong>
+            <br>Missingness depends on the value that is missing (the missing value itself influences whether it’s missing).
+            <br> Firms with very poor earnings are more likely to delay or omit reporting, so the worst earnings are systematically absent.
+          </p>
+      <ol>
+          <li>
+          📗 <a href="Section2/0220_missing_middle.pdf"
+                target="_blank"
+                title="Imputing Missing Data">
+                <code>Imputing missing data</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0221_square_matrix_data.pdf"
+                target="_blank"
+                title="Imputing Missing Data">
+                <code>Unbalanced data</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0223_Smoothing_New_V3.pdf"
+                target="_blank"
+                title="Smoothing Time Series">
+                <code>Smoothing Times Series Considerations</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0224_Univariate_Outliers.pdf"
+                target="_blank"
+                title="Outliers Time Series">
+                <code>Univariate Outlier Considerations</code>
+              </a>
+          </li>
+          <li>
+          📗 <a href="Section2/0225_stationarity.pdf"
+                target="_blank"
+                title="Stationariy discussion">
+                <code>Stationarity revisited</code>
+              </a>
+          </li>
+      </ol>
+  <hr class="hr-red">
+      <h2>2.3 Feature Engineering</h4>
+      <ul>
+       <p>
+        Derived features are variables computed from raw observations (and sometimes from other features) to make underlying structure more explicit for analysis and modelling.<br> They can be simple transforms (e.g., differences, log returns), rolling/windowed statistics (e.g., rolling volatility), or domain-specific constructs (e.g., RSI, credit spreads, sensor spectral power)
+       </p>
+        <li>
+          📗 <a href="Section2/0230_Feature_Engineering.pdf"
+                target="_blank"
+                title="Feature Engineering">
+                <code>Feature Enfineering</code>
+              </a>
+        </li><br>
+        <li>Look-ahead bias — Using future information in feature construction</li>
+        <p> Look-ahead bias in financial markets and macro modeling is a class of information-flow violations i.e. your preprocessing: at time <code>t</code> your model is allowed to use only what would have been knowable and available at <code>t</code>, under realistic operational constraints.</p>
+        <p>The typical look ahead bias occurs as part of data preparation/pre-processing:</p> 
+        <ul>
+            <li>Centered / two-sided transformations</li>
+            <li>Normalization and ranking computed using future data</li>
+            <li>Label leakage via horizon construction</li>
+            <li>Calendar/availability misalignment (macroeconomic data)</li>
+        </ul>  <br>
+      </ul>
+  <hr class="hr-red">      
+      <h2>2.4 High Dimensionality, Multicollinearity & Factor Selection</h4>
+      <ul>
+        <li>Detect relationship instability in Feature Engineering</li>
+          <li>
+      📗 <a href="Section2/0231_Relationship_Instability.pdf"
+            target="_blank"
+            title="Feature Relationship Instability">
+            <code>Feature Relationship Instability</code>
+          </a>
+        </li><br>
+        <li>High-Dimensional Feature Spaces: Redundancy, Collinearity, and Reduction</li>
+          <li>
+      📗 <a href="Section2/0240_Multi_Collinearity_VIF.pdf"
+            target="_blank"
+            title="Feature Relationship Instability">
+            <code>High-Dimensional Feature Spaces: Redundancy, Collinearity</code>
+          </a>
+        </li><br>
+      </ul>
+  <hr class="hr-red">
+      <h2>2.5 Latent Factor Discovery</h4>
+      <ul>
+          <p>Latent variables are unobserved (hidden) quantities that summarize the common drivers behind many observed variables. Instead of modelling dozens of noisy, correlated series directly, we infer a small number of latent “state” signalssuch as a business cycle, credit cycle, trend, or risk sentiment—that explain shared variation over time. 
+             We can think of them as compressed, denoised features: they reduce dimensionality and multicollinearity while often improving interpretability, because the latent states can be treated as underlying forces that shape what we observe.
+          </p>  
+          <a href="Section2/0250_Latent_Variables.pdf"
+            target="_blank"
+            title="Latent Factors">
+            <code>Latent Variables and hidden quantities</code>
+          </a>
+      </ul>
+  <hr class="hr-red">
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- ======= SECTION 3: PREDICTIVE ANALYTICS I =============== -->
+    <!-- ========================================================= -->
+    <section id="section3">
+      <h2>Section 3 — Predictive Analytics I</h2>
+      <p><strong>Goals:</strong> Foundation Models.</p>
+      <ul>
+        <li>Simple Linear Regression</li>
+        <li><span style="color:#aaa;">Polynomial Regression</span></li>
+        <li><span style="color:#aaa;">Regularized Regression</span></li>
+        <li><span style="color:#aaa;">Spurious regression and cointegration concepts</span></li>
+        <li><span style="color:#aaa;">Model selection &amp; diagnostics (AIC, BIC vs. Cross Validation)</span></li>
+        <li><span style="color:#aaa;">Residual diagnostics (Ljung-Box, ARCH tests)</span></li>
+        <li><span style="color:#aaa;">Linear/non-linear regression, GLMs</span></li>
+        <li><span style="color:#aaa;">Vector Autoregression (VAR), Error Correction Models (ECM)/(VECM)</span></li>
+        <li>Regime-switching models</li>
+        <li>Bayesian Modeling Linear Regression</li>
+        <li>Bayesian Modeling MCMC</li>
+        <li>Dynamic Linear Trend (DLT)</li>
+        <li><strong>Motif analysis</strong> </li>
+      </ul>
+      <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- ======= SECTION 4: PREDICTIVE ANALYTICS II ============== -->
+    <!-- ========================================================= -->
+    <section id="section4">
+      <h2>Section 4 — Predictive Analytics II</h2>
+      <p><strong>Goals:</strong> Machine learning for forecasting.</p>
+      <ul>
+        <li><span style="color:#aaa;">Feature importance: SHAP analysis for time-varying relevance</span></li>
+        <li>Hyperparameter optimization with proper time series validation</li>
+        <li>Time-series validation: walk-forward, rolling, purged</li>
+        <li>Tree-based: XGBoost, LightGBM, CatBoost, Random Forest</li>
+        <li>Neural networks: LSTM, Transformer models</li>
+        <li>Evaluation Metrics: RMSE, Hit Ratio, IC, PIT</li>
+        <li>Model decay, monitoring, retraining</li>
+        <li>Some Frameworks : NIXTLAR, DART, Prophet, NeuralProphet, GluonTS, Sktime, Chronos, NeuralProphet, other...</li>
+        <li><strong>Uncertainty paradigms:</strong>
+          <ul>
+            <li><strong>Deterministic:</strong> Point estimates + confidence intervals (model error)</li>
+            <li><strong>Stochastic:</strong> Distributional forecasts + multiple scenario paths (process uncertainty)</li>
+            <li><strong>Uncertainty Types</strong> Model uncertainty (MCMC) vs. Process uncertainty (Monte Carlo)</li>
+          </ul>
+        </li>
+        <li><strong>Production Considerations:</strong>
+          <ul>
+            <li>Model decay, monitoring, retraining</li>
+            <li>A/B testing for model updates</li>
+            <li>Feature drift detection</li>
+            <li>Model versioning and rollback</li>
+            <li>Latency and scalability considerations</li>
+          </ul>
+        </li>  
+      </ul>
+      <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- =================== SECTION 5: MODEL STACKING =========== -->
+    <!-- ========================================================= -->
+    <section id="section5">
+      <h2>Section 5 — Model Stacking</h2>
+      <p><strong>Goals:</strong> Combine models, quantify uncertainty.</p>
+      <ul>
+        <li>Simple averaging, weighted blends</li>
+        <li>Meta-learners (stacking)</li>
+        <li>Calibration, PIT histograms</li>
+      </ul>
+      <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- ======= SECTION 6: NETWORKS & VISUALIZATION ============= -->
+    <!-- ========================================================= -->
+    <section id="section6">
+      <h2>Section 6 — Networks, Visualization & Communication</h2>
+      <p><strong>Goals:</strong>
+        (1) Analyze network structures using graph-theoretic measures to understand influence, hierarchy, and flow;  
+        (2) Communicate these patterns and insights effectively using structured, dynamic visuals.
+      </p>
+      <ul>
+        <li>Graph construction (firm, sector, macro)</li>
+        <li>Centrality metrics (degree, closeness, betweenesseigen, MST)</li>
+        <li>Visual tools: matplotlib, PyVis, plotly</li>
+        <li>Animation & presentation of insights</li>
+        <li>Communicating results</li>
+      </ul>
+      <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
+    </section>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <!-- ========================================================= -->
+  <script>
+    function showSection(id) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+  document.querySelectorAll("details").forEach(d => {
+    d.addEventListener("toggle", () => Prism.highlightAll());
+});
+
+  </script>
+
+
+
+</body>
+</html>
