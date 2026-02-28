@@ -375,7 +375,6 @@ code, pre {
     <!-- ========================================================= -->
   <hr class="hr-red">
       <h2>2.0.2 Implications</h2>
-      <ul>
         <h3>Ergodic Assumption (Univariate)</h3>
           <p>
           Many classical time series and econometric models implicitly assume ergodicity:
@@ -384,7 +383,7 @@ code, pre {
           to be stable over time, so that patterns observed in the past are informative
           about the future.
           </p>
-              <details>
+            <details>
               <summary>Rolling Mean</summary>
               <img src="Images/0202_Rolling_mean_std.png" style="max-width:60%;">
             </details>
@@ -513,7 +512,9 @@ code, pre {
           </ul> 
         <strong>A must</strong> - consistent identifiers, calendars, and frequencies. 
         <p>
-         Most empirical risk is <strong>data <strong>risk: sample selection bias, look-ahead bias, data revisions, and structural breaks can overwhelm apparent signal strength</strong>
+        <p>
+          Most empirical risk is <strong>data risk</strong>: sample selection bias, look-ahead bias, data revisions, and structural breaks can overwhelm apparent signal strength.
+        </p>
         </p>
          A disciplined schema—instrument mastering, PIT snapshots, and explicit calendars—turns ingestion into a controlled process, ensuring factor construction, regime labeling, and portfolio simulations remain comparable across assets and time.
         </p>
@@ -647,7 +648,7 @@ code, pre {
           </li>
       </ol>
   <hr class="hr-red">
-      <h2>2.3 Feature Engineering</h4>
+      <h2>2.3 Feature Engineering</h2>
       <ul>
        <p>
         Derived features are variables computed from raw observations (and sometimes from other features) to make underlying structure more explicit for analysis and modelling.<br> They can be simple transforms (e.g., differences, log returns), rolling/windowed statistics (e.g., rolling volatility), or domain-specific constructs (e.g., RSI, credit spreads, sensor spectral power)
@@ -670,7 +671,7 @@ code, pre {
         </ul>  <br>
       </ul>
   <hr class="hr-red">      
-      <h2>2.4 High Dimensionality, Multicollinearity & Factor Selection</h4>
+      <h2>2.4 High Dimensionality, Multicollinearity & Factor Selection</h2>
       <ul>
         <li>Detect relationship instability in Feature Engineering</li>
           <li>
@@ -690,7 +691,7 @@ code, pre {
         </li><br>
       </ul>
   <hr class="hr-red">
-      <h2>2.5 Latent Factor Discovery</h4>
+      <h2>2.5 Latent Factor Discovery</h2>
       <ul>
           <p>Latent variables are unobserved (hidden) quantities that summarize the common drivers behind many observed variables. Instead of modelling dozens of noisy, correlated series directly, we infer a small number of latent “state” signalssuch as a business cycle, credit cycle, trend, or risk sentiment—that explain shared variation over time. 
              We can think of them as compressed, denoised features: they reduce dimensionality and multicollinearity while often improving interpretability, because the latent states can be treated as underlying forces that shape what we observe.
@@ -703,28 +704,55 @@ code, pre {
       </ul>
   <hr class="hr-red">
     </section>
-
     <!-- ========================================================= -->
     <!-- ======= SECTION 3: PREDICTIVE ANALYTICS I =============== -->
     <!-- ========================================================= -->
     <section id="section3">
       <h2>Section 3 — Predictive Analytics I</h2>
-      <p><strong>Goals:</strong> Foundation Models.</p>
-      <ul>
-        <li>Simple Linear Regression</li>
-        <li><span style="color:#aaa;">Polynomial Regression</span></li>
-        <li><span style="color:#aaa;">Regularized Regression</span></li>
-        <li><span style="color:#aaa;">Spurious regression and cointegration concepts</span></li>
-        <li><span style="color:#aaa;">Model selection &amp; diagnostics (AIC, BIC vs. Cross Validation)</span></li>
-        <li><span style="color:#aaa;">Residual diagnostics (Ljung-Box, ARCH tests)</span></li>
-        <li><span style="color:#aaa;">Linear/non-linear regression, GLMs</span></li>
-        <li><span style="color:#aaa;">Vector Autoregression (VAR), Error Correction Models (ECM)/(VECM)</span></li>
+      <hr class="hr-red">  
+
+          <p><b>Linear regression</b> is the simplest benchmark: fast, explainable, and best when relationships are roughly stable and additive. It’s weak when effects change by level/regime, when interactions matter, or when predictors are highly correlated or noisy.</p>
+
+          <p><b>Polynomial regression</b> is a “light” nonlinear extension that captures smooth curvature while staying close to linear-model thinking. It can overfit and behave poorly outside the observed range, so it’s mainly for mild, well-behaved nonlinearity.</p>
+
+          <p><b>Regularized regression</b> (shrinkage/selection) is the practical choice when you have many correlated features: it improves stability and out-of-sample performance, but sacrifices some interpretability and clean statistical inference.</p>
+
+          <p><b>Spurious regression vs cointegration</b> is the time-series warning label: trending variables can look related when they aren’t; cointegration is the special case where a long-run relationship is real. This determines whether you model levels (with cointegration structure) or switch to changes/returns.</p>
+
+          <p><b>Regression vs ML (rule of thumb):</b> use regression when you want a robust, interpretable baseline or a stable linear signal; use ML when the problem is structurally nonlinear, interactive, or regime-dependent and prediction is the priority—while still controlling for time-series pitfalls like leakage and non-stationarity.</p>
+
+      <hr class="hr-red">  
+        <h3>3.1 Non-Linear  Relationships</h3>
+          <p>A non-linear relationship means the effect of one variable on another is not constant: the sensitivity changes with the level of the driver or the system’s regime. 
+            In ML terms, that usually shows up as state-dependent patterns and distribution shift—the model sees mostly “normal” examples in training, then the mapping changes in 
+            stressed or transition states (often with lags/asymmetry), so the same input no longer implies the same output. This matters because even flexible ML models can 
+            average across regimes, overfit regime-specific quirks, and become miscalibrated or brittle in the tails,
+            which is exactly where decisions are highest-stakes (transitions, extremes, stress scenarios)
+          </p>  
+          <a href="Section3/ppt/0315_Non_Linear_Modeling.pdf"
+              target="_blank"
+              title="Non-Linear Relationships">
+              <code>Non-Linear Relationship</code>
+          </a>
+        <br>
+    <hr class="hr-red">  
+        <h3>3.2 Cross Validation</h3>
+          <p>Cross-validation makes models more robust by repeatedly testing on different train/validation splits, giving a more reliable out-of-sample estimate and helping 
+              control overfitting while tuning and selecting features/models. For ultimate validation, CV is useful but not decisive—final credibility should 
+              come from a strict holdout (ideally time-based or truly independent) plus stability/stress checks that better reflect real deployment conditions
+          </p>  
+          <a href="Section3/ppt/0300_Cross_Validation.pdf"
+              target="_blank"
+              title="Cross Validation">
+              <code>Cross Validation</code>
+          </a>
+        <br>  
+    <hr class="hr-red">  
         <li>Regime-switching models</li>
         <li>Bayesian Modeling Linear Regression</li>
         <li>Bayesian Modeling MCMC</li>
         <li>Dynamic Linear Trend (DLT)</li>
         <li><strong>Motif analysis</strong> </li>
-      </ul>
       <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
     </section>
 
