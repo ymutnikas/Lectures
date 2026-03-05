@@ -748,11 +748,21 @@ code, pre {
           </a>
         <br>  
     <hr class="hr-red">  
-        <li>Regime-switching models</li>
-        <li>Bayesian Modeling Linear Regression</li>
-        <li>Bayesian Modeling MCMC</li>
-        <li>Dynamic Linear Trend (DLT)</li>
-        <li><strong>Motif analysis</strong> </li>
+        <h3>3.3 Regime Switching and Latent Market States</h3>
+          <p>In finance and macroeconomics, regimes are persistent phases where markets/economies behave differently (e.g., calm expansion vs stress), with distinct returns, volatility,
+             and risk–return trade-offs. Regime-switching models—HMMs are one common engine, but not the only one—treat the regime as a latent state that evolves over time and helps 
+             capture fat tails, volatility clustering, and shifting correlations that single-regime linear models miss. Operationally, you infer today’s state probabilities and persistence,
+              feed them into your forecasting/risk stack, and can even predict switches by projecting transition-implied probabilities of moving into a stress/bear regime over the next horizon.
+          </p>  
+          <a href="#" aria-disabled="true" onclick="return false;"
+            title="Latent Regimes (coming soon)"
+            style="pointer-events:none; opacity:0.6; cursor:not-allowed;">
+            <code>Latent Regimes</code> <span style="font-size:0.9em;">(coming soon)</span>
+          </a>
+        <br>  
+    <hr class="hr-red">     
+        <li style="margin-bottom:12px;"><strong>Bayesian regression with time-varying latent states</strong> </li>
+        <li><strong>Recurring Structure Detection — Motif Analysis</strong> </li><br>
       <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
     </section>
 
