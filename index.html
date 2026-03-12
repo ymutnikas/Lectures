@@ -196,8 +196,8 @@ code, pre {
     <a href="#overview" onclick="showSection('overview')">Overview & Learning Outcomes</a>
     <a href="#section1" onclick="showSection('section1')">Sect 1 — Environment</a>
     <a href="#section2" onclick="showSection('section2')">Sect 2 — Data Engineering</a>
-    <a href="#section3" onclick="showSection('section3')">Sect 3 — Predictive Analytics I</a>
-    <a href="#section4" onclick="showSection('section4')">Sect 4 — Predictive Analytics II</a>
+    <a href="#section3" onclick="showSection('section3')">Sect 3 — Analytic Methods</a>
+    <a href="#section4" onclick="showSection('section4')">Sect 4 — Predictive Analytics</a>
     <a href="#section5" onclick="showSection('section5')">Sect 5 — Model Stacking</a>
     <a href="#section6" onclick="showSection('section6')">Sect 6 — Networks, Visualization</a>
   </div>
@@ -708,7 +708,7 @@ code, pre {
     <!-- ======= SECTION 3: PREDICTIVE ANALYTICS I =============== -->
     <!-- ========================================================= -->
     <section id="section3">
-      <h2>Section 3 — Predictive Analytics I</h2>
+      <h2>Section 3 — Analytic Methods</h2>
       <hr class="hr-red">  
 
           <p><b>Linear regression</b> is the simplest benchmark: fast, explainable, and best when relationships are roughly stable and additive. It’s weak when effects change by level/regime, when interactions matter, or when predictors are highly correlated or noisy.</p>
@@ -754,15 +754,23 @@ code, pre {
              capture fat tails, volatility clustering, and shifting correlations that single-regime linear models miss. Operationally, you infer today’s state probabilities and persistence,
               feed them into your forecasting/risk stack, and can even predict switches by projecting transition-implied probabilities of moving into a stress/bear regime over the next horizon.
           </p>  
-          <a href="#" aria-disabled="true" onclick="return false;"
-            title="Latent Regimes (coming soon)"
-            style="pointer-events:none; opacity:0.6; cursor:not-allowed;">
-            <code>Latent Regimes</code> <span style="font-size:0.9em;">(coming soon)</span>
+          <a href="Section3/0320_RegimeModel.pdf"
+              target="_blank"
+              title="Regime Switching">
+              <code>Regime Switching</code>
           </a>
         <br>  
     <hr class="hr-red">     
-        <li style="margin-bottom:12px;"><strong>Bayesian regression with time-varying latent states</strong> </li>
-        <li><strong>Recurring Structure Detection — Motif Analysis</strong> </li><br>
+        <h3>3.4 Reccuring Patterns and Motif Analysis</h3>
+            <p>Motif analysis identifies recurring local patterns in a time series by comparing subsequences for shape similarity. In finance and macroeconomics, it helps detect repeated 
+              structures such as reversals, stress build-ups, and recovery patterns, supporting historical analogue search, anomaly detection, and pattern-aware forecasting.
+          </p>
+            <a href="Section3/0330_Motif_Analysis.pdf"
+                target="_blank"
+                title="Motif Analysis">
+                <code>Reccuring Patterns - Motif Analysis</code>
+            </a>
+
       <div class="back-to-top"><a href="#top" onclick="scrollToTop()">Back to Top ↑</a></div>
     </section>
 
@@ -773,6 +781,7 @@ code, pre {
       <h2>Section 4 — Predictive Analytics II</h2>
       <p><strong>Goals:</strong> Machine learning for forecasting.</p>
       <ul>
+        <li style="margin-bottom:12px;"><strong>Bayesian regression with time-varying latent states</strong> </li>
         <li><span style="color:#aaa;">Feature importance: SHAP analysis for time-varying relevance</span></li>
         <li>Hyperparameter optimization with proper time series validation</li>
         <li>Time-series validation: walk-forward, rolling, purged</li>
